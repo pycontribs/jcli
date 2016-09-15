@@ -12,10 +12,10 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import ConfigParser
 import io
 import logging
 import os
-from six.moves import configparser
 
 from errors import JcliException
 
@@ -37,7 +37,7 @@ def read(conf_file):
     else:
         config_file = DEFAULT_CONF_FILE
 
-    config = configparser.ConfigParser()
+    config = ConfigParser.ConfigParser()
 
     # Reading the config file
     try:
