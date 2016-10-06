@@ -52,11 +52,12 @@ class Job(Server):
 
         if self.job_args.name:
             try:
-                self.server.delete_job(self.job_args.name)
-            except Exception:
-                raise errors.JcliException(
-                    "No such job: {}".format(self.job_args.name))
-            logger.info("Removed job: {}".format(self.job_args.name))
+                for job in self.job_args.name:
+                    self.server.delete_job(job)
+                    logger.info("Removed job: {}".format(job))
+            except Exception as e:
+                raise errors.JcliException(e)
+
         else:
             logger.info("No name provided. Exiting...")
 

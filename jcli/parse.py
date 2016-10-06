@@ -34,8 +34,8 @@ def create_job_parser(client_subparsers, parent_parser):
     # Delete
     job_delete_parser = job_action_subparser.add_parser(
         "delete", help="delete job", parents=[parent_parser])
-    job_delete_parser.add_argument('name',
-                                   help='the name of the job to delete')
+    job_delete_parser.add_argument('name', nargs='*',
+                                   help='the name of the job(s) to delete')
     # Build job
     job_build_parser = job_action_subparser.add_parser(
         "build", help="build job", parents=[parent_parser])
