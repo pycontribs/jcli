@@ -46,6 +46,10 @@ def create_job_parser(client_subparsers, parent_parser):
         'name', help='the name of the job to build')
     job_build_parser.add_argument(
         '-p', '--parameters', type=str, help='params for parameterized job')
+    job_build_parser.add_argument(
+        '-y', '--params_yml', type=str,
+        help='YAML file with params for parameterized job')
+
     # Copy job
     job_copy_parser = job_action_subparser.add_parser(
         "copy", help="copy job", parents=[parent_parser])

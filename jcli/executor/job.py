@@ -15,6 +15,7 @@
 
 import json
 import logging
+import yaml
 
 from jcli import errors
 from server import Server
@@ -83,23 +84,26 @@ class Job(Server):
             raise errors.JcliException(
                 "No such job: {}".format(self.job_args.name))
 
-        logger.info("Enabled job: {}".format(self.job_args.name))
+        logger.info("Enabled job: %s", self.job_args.name)
 
     def build_job(self):
         """Starts job build"""
 
-        try:
-            if self.job_args.parameters:
+        if self.job_args.parameters:
+            self.server.build_job(self.job_args.name,
+                                  json.loads(self.job_args.parameters))
+            logger.info("Starting job build with parameters: %s",
+                        self.job_args.name)
+        elif self.job_args.params_yml:
+            with open(self.job_args.params_yml, 'r') as f:
                 self.server.build_job(self.job_args.name,
-                                      json.loads(self.job_args.parameters))
-                logger.info("Starting job build with parameters: {}".format(
-                    self.job_args.name))
-            else:
-                self.server.build_job(self.job_args.name)
-                logger.info("Starting job build without params: {}".format(
-                    self.job_args.name))
-        except Exception as e:
-            raise errors.JcliException(e)
+                                      json.loads(json.dumps(yaml.load(f))))
+            logger.info("Starting job build with parameters: %s",
+                        self.job_args.name)
+        else:
+            self.server.build_job(self.job_args.name)
+            logger.info("Starting job build without params: %s",
+                        self.job_args.name)
 
     def copy_job(self):
         """Copies job"""
