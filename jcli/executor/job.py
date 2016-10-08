@@ -151,6 +151,20 @@ class Job(Server):
         except Exception as e:
             raise errors.JcliException(e)
 
+    def count_jobs(self):
+        """Returns number of jobs on Jenkins."""
+        if self.job_args.string:
+            jobs_count = 0
+            jobs = self.server.get_jobs()
+            for job_object in jobs:
+                if self.job_args.string in job_object['name']:
+                    jobs_count += 1
+            logger.info("Number of jobs contain the string %s: %s",
+                        self.job_args.string, jobs_count)
+
+        else:
+            logger.info("Number of jobs: %s", self.server.jobs_count())
+
     def run(self):
         """Executes chosen action."""
 
@@ -159,7 +173,7 @@ class Job(Server):
                 logger.info(job)
 
         if self.action == 'count':
-            logger.info("Number of jobs: {}".format(self.server.jobs_count()))
+            self.count_jobs()
 
         if self.action == 'delete':
             self.delete_job()

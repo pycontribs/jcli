@@ -22,10 +22,13 @@ def create_job_parser(client_subparsers, parent_parser):
     job_parser = client_subparsers.add_parser("job", parents=[parent_parser])
     job_action_subparser = job_parser.add_subparsers(title="action",
                                                      dest="job_command")
-    # Job sub-commands
+
     # Count
-    job_action_subparser.add_parser(
+    job_count_parser = job_action_subparser.add_parser(
         "count", help="print number of jobs", parents=[parent_parser])
+    job_count_parser.add_argument('string', help='job name or part of it',
+                                  nargs='?')
+
     # List
     job_list_parser = job_action_subparser.add_parser(
         "list", help="list job(s)", parents=[parent_parser])

@@ -46,6 +46,10 @@ Print the number of jobs on Jenkins server:
 
     jcli job count
 
+Print the number of jobs on Jenkins server which contain the string 'core':
+
+    jcli job count core
+
 Delete job:
    
     jcli job delete <job_name>
