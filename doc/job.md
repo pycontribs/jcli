@@ -50,3 +50,11 @@ Enable job:
 Print information on last build of specific job:
 
     jcli job last_build super-mario-job
+
+Print the console output of a specific job (last build):
+
+    jcli job output her_job
+
+Print the console output of specific job and build:
+
+    jcli job output our_job --build 101

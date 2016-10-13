@@ -169,6 +169,16 @@ class Job(Server):
         else:
             logger.info("Number of jobs: %s", self.server.jobs_count())
 
+    def console_output(self):
+        """Logs job's console output"""
+        if self.job_args.build_num:
+            build_number = self.job_args.build_num
+        else:
+            build_number = self.server.get_job_info(
+                self.job_args.name)['lastCompletedBuild']['number']
+        logger.info(self.server.get_build_console_output(self.job_args.name,
+                                                         build_number))
+
     def run(self):
         """Executes chosen action."""
 
@@ -196,3 +206,6 @@ class Job(Server):
 
         if self.action == 'last_build':
             self.last_build()
+
+        if self.action == 'output':
+            self.console_output()
