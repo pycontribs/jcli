@@ -46,6 +46,9 @@ def create_job_parser(client_subparsers, parent_parser):
     job_output_parser.add_argument('name', help='the name of the job')
     job_output_parser.add_argument('--build', required=False, type=int,
                                    help='build number', dest='build_num')
+    job_output_parser.add_argument('--current', action="store_true",
+                                   help='Display current build output',
+                                   dest='current')
 
     # Build job
     job_build_parser = job_action_subparser.add_parser(

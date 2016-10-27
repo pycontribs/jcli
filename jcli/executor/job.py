@@ -19,6 +19,7 @@ import yaml
 
 from jcli import errors
 from server import Server
+from time import sleep
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger()
@@ -173,6 +174,15 @@ class Job(Server):
         """Logs job's console output"""
         if self.job_args.build_num:
             build_number = self.job_args.build_num
+        elif self.job_args.current:
+            build_number = int(self.server.get_job_info(
+                self.job_args.name)['lastCompletedBuild']['number']) + 1
+            while build_number != self.server.get_job_info(
+                self.job_args.name)['lastCompletedBuild']['number']:
+                logger.info(
+                    self.server.get_build_console_output(self.job_args.name,
+                                                         build_number))
+                sleep(5)
         else:
             build_number = self.server.get_job_info(
                 self.job_args.name)['lastCompletedBuild']['number']
