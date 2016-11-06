@@ -6,9 +6,11 @@ The ultimate Jenkins ClI ;)
 Install
 -------
 
-To install jcli on your system, run the following command:
+A virtual environment is recommended for development. To install jcli on your system, run the following commands:
 
-    sudo pip install .
+    virtualenv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt -e .
 
 Setup config
 ------------
