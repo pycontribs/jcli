@@ -12,8 +12,6 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-
-import jenkins
 import logging
 
 from jcli import errors
@@ -40,12 +38,11 @@ class Plugin(Server):
             if self.plugin_args.name:
                 for name, info in plugins.items():
                     if self.plugin_args.name in name[0]:
-                        logger.info("Name: {}".format(info['longName']))
-                        logger.info("Enabled?: {}".format(info['enabled']))
-                        logger.info("Has update?: {}".format(
-                            info['hasUpdate']))
-                        logger.info("URL: {}".format(info['url']))
-                        logger.info("Version: {}\n".format(info['version']))
+                        logger.info("Name: %s", info['longName'])
+                        logger.info("Enabled?: %s", info['enabled'])
+                        logger.info("Has update?: %s", info['hasUpdate'])
+                        logger.info("URL: %s", info['url'])
+                        logger.info("Version: %s\n", info['version'])
             else:
                 for name, info in plugins.items():
                     logger.info(name[0])
@@ -55,11 +52,23 @@ class Plugin(Server):
 
     def info_plugin(self):
         """Print information on a specific plugin."""
+        plugin_name = self.plugin_args.name[0]
 
         try:
-            plugin_json = self.get_plugin_info(self.args.plugin_args.name)
+            plugin_json = self.server.get_plugin_info(plugin_name)
 
-            logger.info(plugin_json)
+            if plugin_json:
+                logger.info("Name: %s", plugin_name)
+                logger.info("Version: %s", plugin_json['version'])
+                logger.info("Enabled?: %s", plugin_json['enabled'])
+                logger.info("Has update?: %s", plugin_json['hasUpdate'])
+                logger.info("Official page: %s", plugin_json['url'])
+                logger.info("Dependencies:")
+                for dep in plugin_json['dependencies']:
+                    logger.info("\tName: %s", dep['shortName'])
+                    logger.info("\tVersion: %s\n", dep['version'])
+            else:
+                logger.info("No such plugin: %s", plugin_name)
 
         except Exception as e:
             raise errors.JcliException(e)
