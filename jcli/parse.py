@@ -146,6 +146,12 @@ def create_plugin_parser(client_subparsers, parent_parser):
     plugin_list_parser.add_argument('name', help='the plugin name',
                                   nargs='?')
 
+    plugin_info_parser = plugin_action_subparser.add_parser(
+        "info", help="Print information on specified plugin",
+        parents=[parent_parser])
+    plugin_list_parser.add_argument('name', required=True,
+                                    help='the plugin name', nargs='1')
+
 def create_parser():
     """Returns argument parser"""
 

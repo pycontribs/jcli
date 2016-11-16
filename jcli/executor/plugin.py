@@ -42,12 +42,24 @@ class Plugin(Server):
                     if self.plugin_args.name in name[0]:
                         logger.info("Name: {}".format(info['longName']))
                         logger.info("Enabled?: {}".format(info['enabled']))
-                        logger.info("Has update?: {}".format(info['hasUpdate']))
+                        logger.info("Has update?: {}".format(
+                            info['hasUpdate']))
                         logger.info("URL: {}".format(info['url']))
                         logger.info("Version: {}\n".format(info['version']))
             else:
-                for name,info in plugins.items():
+                for name, info in plugins.items():
                     logger.info(name[0])
+
+        except Exception as e:
+            raise errors.JcliException(e)
+
+    def info_plugin(self):
+        """Print information on a specific plugin."""
+
+        try:
+            plugin_json = self.get_plugin_info(self.args.plugin_args.name)
+
+            logger.info(plugin_json)
 
         except Exception as e:
             raise errors.JcliException(e)
@@ -57,3 +69,6 @@ class Plugin(Server):
 
         if self.action == 'list':
             self.list_plugins()
+
+        if self.action == 'info':
+            self.info_plugin()
