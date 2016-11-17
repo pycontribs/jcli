@@ -82,7 +82,10 @@ List all installed plugins:
 
 List infromation on specific plugin:
 
-    jcli plugin list python
+    jcli plugin info my_plugin
+
+
+Full list of plugin commands can be found [here](https://github.com/bregman-arie/jcli/tree/master/doc/plugin.md)
 
 
 License

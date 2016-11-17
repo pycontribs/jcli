@@ -12,9 +12,9 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-
 import jenkins
 import logging
+import re
 
 from jcli import errors
 from server import Server
@@ -56,7 +56,7 @@ class View(Server):
             except Exception:
                 raise errors.JcliException(
                     "No such view: {}".format(self.view_args.name))
-            logger.info("Removed view: {}".format(self.view_args.name))
+            logger.info("Removed view: %s", self.view_args.name)
         else:
             logger.info("No name provided. Exiting...")
 
@@ -66,12 +66,12 @@ class View(Server):
         jobs = self.server.get_jobs(view_name=self.view_args.name)
 
         if jobs:
-            logger.info("The jobs under {}:\n".format(self.view_args.name))
+            logger.info("The jobs under %s:\n", self.view_args.name)
             for job in jobs:
                 logger.info(job['fullname'])
         else:
             logger.info(
-                "No jobs directly under {}\n".format(self.view_args.name))
+                "No jobs directly under %s\n", self.view_args.name)
 
     def create_view(self):
         """Creates new empty view"""
@@ -79,7 +79,21 @@ class View(Server):
         try:
             self.server.create_view(
                 self.view_args.name, jenkins.EMPTY_VIEW_CONFIG_XML)
-            logger.info("Created new view: {}".format(self.view_args.name))
+            logger.info("Created new view: %s", self.view_args.name)
+        except Exception as e:
+            raise errors.JcliException(e)
+
+    def rename_view(self):
+        """Rename the specific view. """
+
+        view_config = self.server.get_view_config(self.view_args.name)
+        new_config = re.sub(r"<name>.*</name>",
+                            "<name>%s</name>" % self.view_args.new_name,
+                            view_config)
+        try:
+            self.server.reconfig_view(self.view_args.name, new_config)
+            logger.info("Renamed. The new name: %s", self.view_args.new_name)
+
         except Exception as e:
             raise errors.JcliException(e)
 
@@ -98,3 +112,9 @@ class View(Server):
 
         if self.action == 'create':
             self.create_view()
+
+        if self.action == 'rename':
+            self.rename_view()
+
+        if self.action == 'config':
+            self.get_config()

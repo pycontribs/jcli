@@ -94,23 +94,39 @@ def create_view_parser(client_subparsers, parent_parser):
                                                        dest="view_command")
 
     # View sub-commands
+
+    # List views
     view_list_parser = view_action_subparser.add_parser(
         "list", help="list view(s)", parents=[parent_parser])
     view_list_parser.add_argument('name', help='view name or part of it',
                                   nargs='?')
+
+    # Delete view
     view_delete_parser = view_action_subparser.add_parser(
         "delete", help="delete view", parents=[parent_parser])
     view_delete_parser.add_argument('name',
                                     help='the name of the view to delete')
+
+    # Jobs under a specific view
     view_jobs_parser = view_action_subparser.add_parser(
         "jobs",
         help="List all the jobs under specific view", parents=[parent_parser])
     view_jobs_parser.add_argument(
         'name', help='the name of the view')
+
+    # Create view
     view_create_parser = view_action_subparser.add_parser(
         "create", help="create view", parents=[parent_parser])
     view_create_parser.add_argument(
         'name', help='name of the view', nargs='?')
+
+    # Rename view
+    view_rename_parser = view_action_subparser.add_parser(
+        "rename", help="rename view", parents=[parent_parser])
+    view_rename_parser.add_argument(
+        'name', help='the current name of the view')
+    view_rename_parser.add_argument(
+        'new_name', help='the new name of the view')
 
 
 def create_node_parser(client_subparsers, parent_parser):
@@ -122,14 +138,40 @@ def create_node_parser(client_subparsers, parent_parser):
                                                        dest="node_command")
 
     # Node sub-commands
+
+    # List nodes
     node_list_parser = node_action_subparser.add_parser(
         "list", help="list node(s)", parents=[parent_parser])
     node_list_parser.add_argument('name', help='node name or part of it',
                                   nargs='?')
+
+    # Delete node
     node_delete_parser = node_action_subparser.add_parser(
         "delete", help="delete node", parents=[parent_parser])
     node_delete_parser.add_argument('name',
                                     help='the name of the node to delete')
+
+    # Create node
+    node_create_parser = node_action_subparser.add_parser(
+        "create", help="create node", parents=[parent_parser])
+    node_create_parser.add_argument('name',
+                                    help='The name of the node')
+    node_create_parser.add_argument('--description', default=None,
+                                    required=False,
+                                    help='The description of the node')
+    node_create_parser.add_argument('--remotefs', default="/var/lib/jenkins",
+                                    help='Remote filesystem location to use')
+    node_create_parser.add_argument('--labels', default=None,
+                                    help='Labels to associate with node')
+    node_create_parser.add_argument('--exclusive', type=bool, default=False,
+                                    help='Use this node for tied jobs only')
+    node_create_parser.add_argument('--executors', type=int, default=2,
+                                    help='The number of executors')
+
+    # Info on node
+    node_info_parser = node_action_subparser.add_parser(
+        "info", help="Print info on node", parents=[parent_parser])
+    node_info_parser.add_argument('name', help='the name of the node')
 
 
 def create_plugin_parser(client_subparsers, parent_parser):
@@ -142,10 +184,8 @@ def create_plugin_parser(client_subparsers, parent_parser):
         title="action", dest="plugin_command")
 
     # Plugin sub-commands
-    plugin_list_parser = plugin_action_subparser.add_parser(
+    plugin_action_subparser.add_parser(
         "list", help="list plugin(s)", parents=[parent_parser])
-    plugin_list_parser.add_argument('name', help='the plugin name',
-                                    nargs='?')
 
     plugin_info_parser = plugin_action_subparser.add_parser(
         "info", help="Print information on specified plugin",

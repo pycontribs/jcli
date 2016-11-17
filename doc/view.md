@@ -22,3 +22,7 @@ List all the jobs under specific view:
 Create new view:
 
     jcli view create new_view
+
+Rename an existing view:
+
+    jcli view rename current_view_name new_view_name

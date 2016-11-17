@@ -30,28 +30,19 @@ class Plugin(Server):
         self.plugin_args = plugin_args
 
     def list_plugins(self):
-        """Print list of plugins"""
+        """Print list of all the plugins"""
 
         try:
             plugins = self.server.get_plugins()
-
-            if self.plugin_args.name:
-                for name, info in plugins.items():
-                    if self.plugin_args.name in name[0]:
-                        logger.info("Name: %s", info['longName'])
-                        logger.info("Enabled?: %s", info['enabled'])
-                        logger.info("Has update?: %s", info['hasUpdate'])
-                        logger.info("URL: %s", info['url'])
-                        logger.info("Version: %s\n", info['version'])
-            else:
-                for name, info in plugins.items():
-                    logger.info(name[0])
+            for name, info in plugins.items():
+                logger.info(name[0])
 
         except Exception as e:
             raise errors.JcliException(e)
 
-    def info_plugin(self):
+    def plugin_info(self):
         """Print information on a specific plugin."""
+
         plugin_name = self.plugin_args.name[0]
 
         try:
@@ -80,4 +71,4 @@ class Plugin(Server):
             self.list_plugins()
 
         if self.action == 'info':
-            self.info_plugin()
+            self.plugin_info()

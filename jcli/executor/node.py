@@ -12,7 +12,6 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-
 import logging
 
 from jcli import errors
@@ -49,15 +48,56 @@ class Node(Server):
     def delete_node(self):
         """Removes node from the server"""
 
-        if self.name:
+        if self.node_args.name:
             try:
                 self.server.delete_node(self.node_args.name)
             except Exception:
                 raise errors.JcliException(
                     "No such node: {}".format(self.node_args.name))
-            logger.info("Removed node: {}".format(self.node_args.name))
+            logger.info("Removed node: %s", self.node_args.name)
         else:
             logger.info("No name provided. Exiting...")
+
+    def create_node(self):
+        """Creates node."""
+
+        name = self.node_args.name
+
+        if self.server.node_exists(name):
+            raise errors.JcliException(
+                "There is already node with this name: %s", name)
+
+        try:
+            self.server.create_node(name, self.node_args.executors,
+                                    self.node_args.description,
+                                    self.node_args.remotefs,
+                                    self.node_args.labels,
+                                    self.node_args.exclusive)
+            logger.info("Node created: %s", name)
+
+        except Exception:
+            raise errors.JcliException("Couldn't create node: %s",
+                                       Exception.message)
+
+    def node_info(self):
+        """Print information on a specific plugin."""
+
+        if not self.server.node_exists(self.node_args.name):
+            raise errors.JcliException(
+                "There is node with such name: %s", self.node_args.name)
+        try:
+            node_json = self.server.get_node_info(
+                self.node_args.name)
+
+            logger.info("Name: %s", self.node_args.name)
+            logger.info("Idle? %s", node_json['idle'])
+            logger.info("Number of executors: %s", node_json['numExecutors'])
+            logger.info("Offline? %s", node_json['offline'])
+            if node_json['offline'] and node_json['offlineCauseReason']:
+                logger.info("Cause: %s", node_json['offlineCauseReason'])
+
+        except Exception as e:
+            raise errors.JcliException(e)
 
     def run(self):
         """Executes chosen action."""
@@ -68,3 +108,9 @@ class Node(Server):
 
         if self.action == 'delete':
             self.delete_node()
+
+        if self.action == 'create':
+            self.create_node()
+
+        if self.action == 'info':
+            self.node_info()
