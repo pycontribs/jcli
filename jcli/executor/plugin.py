@@ -24,7 +24,7 @@ logger = logging.getLogger()
 class Plugin(Server):
     """Manages plugin command execution"""
 
-    def __init__(self, action, url, user, password, plugin_args):
+    def __init__(self, action, url, user, password, plugin_args=None):
         super(Plugin, self).__init__(url, user, password)
         self.action = action
         self.plugin_args = plugin_args

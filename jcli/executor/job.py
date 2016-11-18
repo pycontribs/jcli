@@ -28,7 +28,7 @@ logger = logging.getLogger()
 class Job(Server):
     """Manages job command execution"""
 
-    def __init__(self, action, url, user, password, job_args):
+    def __init__(self, url, user, password, job_args=None, action=None):
         super(Job, self).__init__(url, user, password)
         self.action = action
         self.job_args = job_args

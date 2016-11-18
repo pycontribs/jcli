@@ -24,7 +24,7 @@ logger = logging.getLogger()
 class Node(Server):
     """Manages node command execution"""
 
-    def __init__(self, action, url, user, password, node_args):
+    def __init__(self, url, user, password, node_args=None, action=None):
         super(Node, self).__init__(url, user, password)
         self.action = action
         self.node_args = node_args

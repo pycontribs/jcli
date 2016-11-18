@@ -39,22 +39,22 @@ def main():
 
     # 'job' command
     if args.main_command == 'job':
-        job_executor = Job(args.job_command, url, user, password, args)
+        job_executor = Job(url, user, password, args, args.job_command)
         job_executor.run()
 
     # 'view' command
     if args.main_command == 'view':
-        view_executor = View(args.view_command, url, user, password, args)
+        view_executor = View(url, user, password, args, args.view_command)
         view_executor.run()
 
     # 'node' command
     if args.main_command == 'node':
-        node_executor = Node(args.node_command, url, user, password, args)
+        node_executor = Node(url, user, password, args, args.node_command)
         node_executor.run()
 
     # 'plugin' command
     if args.main_command == 'plugin':
-        plugin_executor = Plugin(args.plugin_command, url, user, password, args)
+        plugin_executor = Plugin(url, user, password, args, args.plugin_command)
         plugin_executor.run()
 
 if __name__ == '__main__':

@@ -26,7 +26,7 @@ logger = logging.getLogger()
 class View(Server):
     """Manages view command execution"""
 
-    def __init__(self, action, url, user, password, view_args):
+    def __init__(self, url, user, password, view_args=None, action=None):
         super(View, self).__init__(url, user, password)
         self.action = action
         self.view_args = view_args
