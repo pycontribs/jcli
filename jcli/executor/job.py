@@ -196,7 +196,7 @@ class Job(Server):
 
         if self.action == 'list':
             for job in self.get_jobs_names():
-                logger.info(job)
+                print(job)
 
         if self.action == 'count':
             self.count_jobs()
