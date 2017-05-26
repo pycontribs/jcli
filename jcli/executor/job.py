@@ -18,7 +18,7 @@ import logging
 import yaml
 
 from jcli import errors
-from server import Server
+from jcli.executor.server import Server
 from time import sleep
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
