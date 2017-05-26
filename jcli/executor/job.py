@@ -18,7 +18,7 @@ import logging
 import yaml
 
 from jcli import errors
-from server import Server
+from jcli.executor.server import Server
 from time import sleep
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
@@ -172,21 +172,23 @@ class Job(Server):
 
     def console_output(self):
         """Logs job's console output"""
+        jn = self.job_args.name
         if self.job_args.build_num:
             build_number = self.job_args.build_num
         elif self.job_args.current:
             build_number = int(self.server.get_job_info(
-                self.job_args.name)['lastCompletedBuild']['number']) + 1
-            while build_number != self.server.get_job_info(
-                self.job_args.name)['lastCompletedBuild']['number']:
+                jn)['lastCompletedBuild']['number']) + 1
+
+            while (build_number != self.server.get_job_info(jn)
+                   ['lastCompletedBuild']['number']):
                 logger.info(
-                    self.server.get_build_console_output(self.job_args.name,
+                    self.server.get_build_console_output(jn,
                                                          build_number))
                 sleep(5)
         else:
             build_number = self.server.get_job_info(
-                self.job_args.name)['lastCompletedBuild']['number']
-        logger.info(self.server.get_build_console_output(self.job_args.name,
+                jn)['lastCompletedBuild']['number']
+        logger.info(self.server.get_build_console_output(jn,
                                                          build_number))
 
     def run(self):
@@ -194,7 +196,7 @@ class Job(Server):
 
         if self.action == 'list':
             for job in self.get_jobs_names():
-                logger.info(job)
+                print(job)
 
         if self.action == 'count':
             self.count_jobs()

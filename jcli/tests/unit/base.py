@@ -13,8 +13,9 @@
 #    under the License.
 from jcli.tests import base
 
+
 class BaseTestCase(base.TestCase):
-    
+
     def setUp(self):
         """Run before each test method to initialize test environment."""
 

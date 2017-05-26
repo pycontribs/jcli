@@ -28,7 +28,7 @@ class TestCase(testtools.TestCase):
         """Run before each test method to initialize test environment."""
 
         super(TestCase, self).setUp()
-        
+
         # Timeout
         test_timeout = int(os.environ.get('OS_TEST_TIMEOUT', 0))
         try:

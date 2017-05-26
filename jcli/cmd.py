@@ -54,8 +54,13 @@ def main():
 
     # 'plugin' command
     if args.main_command == 'plugin':
-        plugin_executor = Plugin(url, user, password, args, args.plugin_command)
+        plugin_executor = Plugin(url,
+                                 user,
+                                 password,
+                                 args,
+                                 args.plugin_command)
         plugin_executor.run()
+
 
 if __name__ == '__main__':
     sys.exit(main())
