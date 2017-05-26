@@ -20,8 +20,12 @@ Print the number of jobs on Jenkins server which contain the string 'core':
     jcli job count core
 
 Delete job:
-   
+
     jcli job delete <job_name>
+
+Delete multiple jobs:
+
+    jcli job list | grep 'xxx' | xargs -I{} jcli job delete {}
 
 Build parameterized job:
 
