@@ -22,7 +22,8 @@ from errors import JcliException
 DEFAULT_CONF_FILES = [
     '~/.config/jcli/jcli.ini',
     '~/jcli.ini',
-    '/etc/jcli/config.ini'
+    '/etc/jcli/config.ini',
+    '~/.config/jenkins_jobs/jenkins_jobs.ini', # reuse jjb config if found
     ]
 
 def read(conf_file):
