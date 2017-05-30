@@ -19,8 +19,11 @@ import os
 
 from errors import JcliException
 
-DEFAULT_CONF_FILE = '/etc/jcli/config.ini'
-
+DEFAULT_CONF_FILES = [
+    '~/.config/jcli/jcli.ini',
+    '~/jcli.ini',
+    '/etc/jcli/config.ini'
+    ]
 
 def read(conf_file):
     """Returns config parser object.
@@ -35,8 +38,10 @@ def read(conf_file):
     elif conf_file:
         config_file = conf_file
     else:
-        config_file = DEFAULT_CONF_FILE
-
+        for f in DEFAULT_CONF_FILES:
+            if os.path.isfile(os.path.expanduser(f)):
+                config_file = os.path.expanduser(f)
+                break
     config = ConfigParser.ConfigParser()
 
     # Reading the config file
