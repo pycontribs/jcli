@@ -1,12 +1,13 @@
 Jcli - Jenkins Command-line Interface
 =====================================
 
-The ultimate Jenkins ClI ;)
+The ultimate Jenkins CLI ;)
 
 Install
 -------
 
-A virtual environment is recommended for development. To install jcli on your system, run the following commands:
+A virtual environment is recommended for development. To install `jcli` on your
+system, run the following commands:
 
     virtualenv .venv
     source .venv/bin/activate
@@ -15,16 +16,18 @@ A virtual environment is recommended for development. To install jcli on your sy
 Setup config
 ------------
 
-jcli is using configuartion file to connect the server.
+`jcli` is using configuration file to connect the server.
 
-It can be setup in one of the following paths:
+It can be setup in one of the following paths, in that order:
 
+    ~/.config/jcli/jcli.ini
+    ~/jcli/jcli.ini
     /etc/jcli/config.ini
     `pwd`/config.ini
 
-or it can passed as an argument.
+or filename can be passed as an argument.
 
-Minimal configuartion is:
+Minimal configuration is:
 
     [jenkins]
     user=<jenkins_user>
@@ -59,7 +62,7 @@ List all views:
 
 Delete view:
 
-    jcli view delete view90 
+    jcli view delete view90
 
 
 Full list of view commands can be found [here](https://github.com/bregman-arie/jcli/tree/master/doc/view.md)
