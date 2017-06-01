@@ -24,8 +24,12 @@ It can be setup in one of the following paths, in that order:
     ~/jcli/jcli.ini
     /etc/jcli/config.ini
     `pwd`/config.ini
+    ~/.config/jenkins_jobs/jenkins_jobs.ini
 
 or filename can be passed as an argument.
+
+As you can see `jcli` is able to use
+[`jjb`](https://docs.openstack.org/infra/jenkins-job-builder/) config files.
 
 Minimal configuration is:
 
