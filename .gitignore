@@ -1,2 +1,6 @@
 /jcli.egg-info
 /.testrepository
+/ChangeLog
+/AUTHORS
+/dist
+/build
