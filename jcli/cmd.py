@@ -33,9 +33,9 @@ def main():
     run_config = config.read(args.config)
 
     # Get url, user and password to be able setup connection to the server
-    url = config.get_value(run_config, 'jenkins', 'url')
-    user = config.get_value(run_config, 'jenkins', 'user')
-    password = config.get_value(run_config, 'jenkins', 'password')
+    url = config.get_value(run_config, args.section, 'url')
+    user = config.get_value(run_config, args.section, 'user')
+    password = config.get_value(run_config, args.section, 'password')
 
     # 'job' command
     if args.main_command == 'job':
