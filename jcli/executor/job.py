@@ -170,24 +170,25 @@ class Job(Server):
         else:
             logger.info("Number of jobs: %s", self.server.jobs_count())
 
+    def build_number(self):
+        return int(self.server.get_job_info(
+            self.job_args.name)['lastCompletedBuild']['number'])
+
     def console_output(self):
         """Logs job's console output"""
         if self.job_args.build_num:
             build_number = self.job_args.build_num
         elif self.job_args.current:
-            build_number = int(self.server.get_job_info(
-                self.job_args.name)['lastCompletedBuild']['number']) + 1
-            while build_number != self.server.get_job_info(
-                self.job_args.name)['lastCompletedBuild']['number']:
+            build_number = self.build_number() + 1
+            while build_number != self.build_number():
                 logger.info(
                     self.server.get_build_console_output(self.job_args.name,
                                                          build_number))
                 sleep(5)
         else:
-            build_number = self.server.get_job_info(
-                self.job_args.name)['lastCompletedBuild']['number']
-        logger.info(self.server.get_build_console_output(self.job_args.name,
-                                                         build_number))
+            logger.info(self.server.get_build_console_output(
+                        self.job_args.name,
+                        self.build_number()))
 
     def run(self):
         """Executes chosen action."""
