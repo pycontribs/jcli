@@ -23,8 +23,9 @@ DEFAULT_CONF_FILES = [
     '~/.config/jcli/jcli.ini',
     '~/jcli.ini',
     '/etc/jcli/config.ini',
-    '~/.config/jenkins_jobs/jenkins_jobs.ini', # reuse jjb config if found
-    ]
+    '~/.config/jenkins_jobs/jenkins_jobs.ini',  # reuse jjb config if found
+]
+
 
 def read(conf_file):
     """Returns config parser object.

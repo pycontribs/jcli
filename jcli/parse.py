@@ -201,15 +201,19 @@ def create_parser():
     parent_parser = argparse.ArgumentParser(add_help=False)
 
     main_parser = argparse.ArgumentParser()
-    main_parser.add_argument('--server', '-s', default='jenkins',
-                             dest="section",
-                             help="Section name in config file, defaults to 'jenkins'")
-    main_parser.add_argument('--user', '-u', default=getpass.getuser(),
-                             help='username')
-    main_parser.add_argument('--config', '-c', dest="config",
-                             help='client configuration file')
-    main_parser.add_argument('--debug', required=False, action='store_true',
-                             dest="debug", help='debug flag')
+    main_parser.add_argument(
+        '--server', '-s', default='jenkins',
+        dest="section",
+        help="Section name in config file, defaults to 'jenkins'")
+    main_parser.add_argument(
+        '--user', '-u', default=getpass.getuser(),
+        help='username')
+    main_parser.add_argument(
+        '--config', '-c', dest="config",
+        help='client configuration file')
+    main_parser.add_argument(
+        '--debug', required=False, action='store_true',
+        dest="debug", help='debug flag')
 
     client_subparsers = main_parser.add_subparsers(
         title="client", dest="main_command")
