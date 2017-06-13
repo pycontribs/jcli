@@ -1,0 +1,24 @@
+language: python
+sudo: false
+matrix:
+  fast_finish: false
+os:
+- linux
+python:
+- '2.7'
+install:
+- pip -q --log dist/pip.log install --upgrade pip setuptools tox-travis py wheel
+- python setup.py sdist bdist_wheel install
+- pip install ./dist/*.whl
+- pip --version
+script:
+- export PACKAGE_NAME=$(python setup.py --name)
+- export PACKAGE_VERSION=$(python setup.py --version)
+- python setup.py --version
+- tox --installpkg ./dist/*.whl --travis-after
+# validates that the build source distribution is installable using the old easy_install
+- pip uninstall -y $PACKAGE_NAME && easy_install ./dist/$PACKAGE_NAME-*.tar.gz
+notifications:
+  email:
+  - abregman@redhat.com
+  - ssbarnea@redhat.com
