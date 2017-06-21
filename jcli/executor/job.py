@@ -13,16 +13,32 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import collections
 import json
 import logging
+import six
+from time import sleep
 import yaml
 
 from jcli import errors
 from jcli.executor.server import Server
-from time import sleep
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger()
+
+
+def allof(arg):
+    """Allows to parse params that could be strings or lists.
+
+    String itself is iterable, so we need to avoid parsing
+    each char.
+    """
+
+    if isinstance(arg, collections.Iterable) and \
+            not isinstance(arg, six.string_types):
+        return arg
+    else:
+        return [arg]
 
 
 class Job(Server):
@@ -40,71 +56,77 @@ class Job(Server):
 
         jobs = self.server.get_jobs()
         if self.job_args.name:
-            for job_object in jobs:
-                if self.job_args.name in job_object['name']:
-                    jobs_names.append(job_object['name'])
+            for name in allof(self.job_args.name):
+                for job_object in jobs:
+                    if name in job_object['name']:
+                        jobs_names.append(job_object['name'])
         else:
             for job_object in jobs:
                 jobs_names.append(job_object['name'])
 
-        return jobs_names
+        return sorted(set(jobs_names))
 
     def delete_job(self):
         """Removes job from the server"""
 
         if self.job_args.name:
-            try:
-                for job in self.job_args.name:
-                    self.server.delete_job(job)
-                    logger.info("Removed job: {}".format(job))
-            except Exception as e:
-                raise errors.JcliException(e)
-
+            for name in allof(self.job_args.name):
+                try:
+                    self.server.delete_job(name)
+                    logger.info("Removed job: {}".format(name))
+                except Exception as e:
+                    raise errors.JcliException(e)
         else:
             logger.info("No name provided. Exiting...")
 
     def disable_job(self):
         """Disables job"""
 
-        try:
-            self.server.disable_job(self.job_args.name)
+        for name in allof(self.job_args.name):
 
-        except Exception:
-            raise errors.JcliException(
-                "No such job: {}".format(self.job_args.name))
+            try:
+                self.server.disable_job(name)
 
-        logger.info("Disabled job: {}".format(self.job_args.name))
+            except Exception:
+                raise errors.JcliException(
+                    "No such job: {}".format(name))
+
+            logger.info("Disabled job: {}".format(name))
 
     def enable_job(self):
         """Enables job"""
 
-        try:
-            self.server.enable_job(self.job_args.name)
+        for name in allof(self.job_args.name):
 
-        except Exception:
-            raise errors.JcliException(
-                "No such job: {}".format(self.job_args.name))
+            try:
+                self.server.enable_job(name)
 
-        logger.info("Enabled job: %s", self.job_args.name)
+            except Exception:
+                raise errors.JcliException(
+                    "No such job: {}".format(name))
+
+            logger.info("Enabled job: %s", name)
 
     def build_job(self):
         """Starts job build"""
 
-        if self.job_args.parameters:
-            self.server.build_job(self.job_args.name,
-                                  json.loads(self.job_args.parameters))
-            logger.info("Starting job build with parameters: %s",
-                        self.job_args.name)
-        elif self.job_args.params_yml:
-            with open(self.job_args.params_yml, 'r') as f:
-                self.server.build_job(self.job_args.name,
-                                      json.loads(json.dumps(yaml.load(f))))
-            logger.info("Starting job build with parameters: %s",
-                        self.job_args.name)
-        else:
-            self.server.build_job(self.job_args.name)
-            logger.info("Starting job build without params: %s",
-                        self.job_args.name)
+        for name in allof(self.job_args.name):
+
+            if self.job_args.parameters:
+                self.server.build_job(name,
+                                      json.loads(self.job_args.parameters))
+                logger.info("Starting job build with parameters: %s",
+                            name)
+            elif self.job_args.params_yml:
+                with open(self.job_args.params_yml, 'r') as f:
+                    self.server.build_job(name,
+                                          json.loads(json.dumps(yaml.load(f))))
+                logger.info("Starting job build with parameters: %s",
+                            name)
+            else:
+                self.server.build_job(name)
+                logger.info("Starting job build without params: %s",
+                            name)
 
     def copy_job(self):
         """Copies job"""
