@@ -1,0 +1,20 @@
+dist: trusty
+group: edge
+language: python
+python:
+- '2.7'
+- '3.4'
+- '3.5'
+install:
+- pip install -U setuptools pip tox-travis
+- python setup.py bdist bdist_wheel
+# do not attempt setup.py install or develop, is not fully supported by pbr
+# this does not affect distribution as already packged wheels do work well
+script:
+- tox
+after_success:
+- codecov
+branches:
+  only:
+  - master
+  - develop
