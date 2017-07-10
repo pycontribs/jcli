@@ -14,7 +14,7 @@
 #    under the License.
 import logging
 
-from jcli import errors
+from jcli import exception
 from server import Server
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
@@ -38,7 +38,7 @@ class Plugin(Server):
                 logger.info(name[0])
 
         except Exception as e:
-            raise errors.JcliException(e)
+            raise exception.JcliException(e)
 
     def plugin_info(self):
         """Print information on a specific plugin."""
@@ -62,7 +62,7 @@ class Plugin(Server):
                 logger.info("No such plugin: %s", plugin_name)
 
         except Exception as e:
-            raise errors.JcliException(e)
+            raise exception.JcliException(e)
 
     def run(self):
         """Executes chosen action."""

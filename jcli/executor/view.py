@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright 2016 Arie Bregman
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -16,7 +15,7 @@ import jenkins
 import logging
 import re
 
-from jcli import errors
+from jcli import exception
 from server import Server
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
@@ -54,7 +53,7 @@ class View(Server):
             try:
                 self.server.delete_view(self.view_args.name)
             except Exception:
-                raise errors.JcliException(
+                raise exception.JcliException(
                     "No such view: {}".format(self.view_args.name))
             logger.info("Removed view: %s", self.view_args.name)
         else:
@@ -81,7 +80,7 @@ class View(Server):
                 self.view_args.name, jenkins.EMPTY_VIEW_CONFIG_XML)
             logger.info("Created new view: %s", self.view_args.name)
         except Exception as e:
-            raise errors.JcliException(e)
+            raise exception.JcliException(e)
 
     def rename_view(self):
         """Rename the specific view. """
@@ -95,7 +94,7 @@ class View(Server):
             logger.info("Renamed. The new name: %s", self.view_args.new_name)
 
         except Exception as e:
-            raise errors.JcliException(e)
+            raise exception.JcliException(e)
 
     def run(self):
         """Executes chosen action."""

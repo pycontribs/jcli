@@ -20,7 +20,7 @@ import six
 from time import sleep
 import yaml
 
-from jcli import errors
+from jcli import exception
 from jcli.executor.server import Server
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
@@ -75,7 +75,7 @@ class Job(Server):
                     self.server.delete_job(name)
                     logger.info("Removed job: {}".format(name))
                 except Exception as e:
-                    raise errors.JcliException(e)
+                    raise exception.JcliException(e)
         else:
             logger.info("No name provided. Exiting...")
 
@@ -88,7 +88,7 @@ class Job(Server):
                 self.server.disable_job(name)
 
             except Exception:
-                raise errors.JcliException(
+                raise exception.JcliException(
                     "No such job: {}".format(name))
 
             logger.info("Disabled job: {}".format(name))
@@ -102,7 +102,7 @@ class Job(Server):
                 self.server.enable_job(name)
 
             except Exception:
-                raise errors.JcliException(
+                raise exception.JcliException(
                     "No such job: {}".format(name))
 
             logger.info("Enabled job: %s", name)
@@ -137,7 +137,7 @@ class Job(Server):
             logger.info("Done copying: {}. The new job is called: {}".format(
                 self.job_args.source_job_name, self.job_args.dest_job_name))
         except Exception as e:
-            raise errors.JcliException(e)
+            raise exception.JcliException(e)
 
     def last_build(self):
         """Output information on last build"""
@@ -176,7 +176,7 @@ class Job(Server):
                 "\nResult: {}".format(build_info['lastBuild']['result']))
 
         except Exception as e:
-            raise errors.JcliException(e)
+            raise exception.JcliException(e)
 
     def count_jobs(self):
         """Returns number of jobs on Jenkins."""

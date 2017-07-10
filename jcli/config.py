@@ -17,12 +17,13 @@ import io
 import logging
 import os
 
-from errors import JcliException
+from exception import JcliException
 
 DEFAULT_CONF_FILES = [
     '~/.config/jcli/jcli.ini',
     '~/jcli.ini',
     '/etc/jcli/config.ini',
+    '/etc/jcli/jcli.conf',
     '~/.config/jenkins_jobs/jenkins_jobs.ini',  # reuse jjb config if found
 ]
 
@@ -32,7 +33,7 @@ def read(conf_file):
 
     :param conf_file: the config file.
     """
-
+    config_file = None
     cwd_conf_file = os.path.join(os.getcwd(), 'config.ini')
 
     if os.path.isfile(cwd_conf_file):
@@ -43,7 +44,6 @@ def read(conf_file):
         for f in DEFAULT_CONF_FILES:
             if os.path.isfile(os.path.expanduser(f)):
                 config_file = os.path.expanduser(f)
-                break
     config = ConfigParser.ConfigParser()
 
     # Reading the config file

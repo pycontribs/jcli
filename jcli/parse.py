@@ -17,6 +17,27 @@ import getpass
 import sys
 
 
+def create_build_parser(client_subparsers, parent_parser):
+    """Creates build parser"""
+    build_parser = client_subparsers.add_parser("build",
+                                                parents=[parent_parser])
+    build_action_subparser = build_parser.add_subparsers(title="action",
+                                                         dest="build_command")
+
+    # Stop build
+    build_stop_parser = build_action_subparser.add_parser(
+        "stop",
+        help="stop a given build",
+        parents=[parent_parser])
+    build_stop_parser.add_argument("--number", "-b",
+                                   dest="build_number",
+                                   required=False,
+                                   help='build number')
+    build_stop_parser.add_argument('--name', '-j', dest="job_name",
+                                   required=True,
+                                   help='job name', nargs=1)
+
+
 def create_job_parser(client_subparsers, parent_parser):
     """Creates job parser"""
     if not sys.stdin.isatty():
@@ -242,6 +263,7 @@ def create_parser():
         title="client", dest="main_command")
 
     create_job_parser(client_subparsers, parent_parser)
+    create_build_parser(client_subparsers, parent_parser)
     create_view_parser(client_subparsers, parent_parser)
     create_node_parser(client_subparsers, parent_parser)
     create_plugin_parser(client_subparsers, parent_parser)

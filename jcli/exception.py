@@ -17,5 +17,14 @@ class JcliException(Exception):
     pass
 
 
+class JcliJobNotFound(JcliException):
+
+    def __init__(self, job_name):
+        message = "Couldn't find the job: %s or the given \
+build number" % job_name
+
+        super(JcliJobNotFound, self).__init__(message)
+
+
 class HTTPError(Exception):
     pass

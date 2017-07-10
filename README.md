@@ -6,12 +6,20 @@ The ultimate Jenkins CLI ;)
 Install
 -------
 
-A virtual environment is recommended for development. To install `jcli` on your
-system, run the following commands:
+A virtual environment is recommended for development. To install latest
+version of `jcli` on your system, run the following commands:
 
     virtualenv .venv
     source .venv/bin/activate
     pip install -r requirements.txt -e .
+
+For quick installation:
+
+    scripts/quick_install.sh
+
+To install from PyPi (not necessarily latest version!):
+
+    pip install jcli
 
 Setup config
 ------------
@@ -23,6 +31,7 @@ It can be setup in one of the following paths, in that order:
     ~/.config/jcli/jcli.ini
     ~/jcli/jcli.ini
     /etc/jcli/config.ini
+    /etc/jcli/jcli.conf
     `pwd`/config.ini
     ~/.config/jenkins_jobs/jenkins_jobs.ini
 
@@ -57,6 +66,17 @@ Print the number of jobs on Jenkins server:
 
 
 Full list of job commands can be found [here](https://github.com/bregman-arie/jcli/tree/master/doc/job.md)
+
+### Build examples
+
+Stop last build:
+
+    jcli build stop --name my_job
+
+Stop specific build:
+
+    jcli build stop --name my_job --number 10
+
 
 ### View examples
 

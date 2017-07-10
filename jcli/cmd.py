@@ -16,6 +16,7 @@ import sys
 
 import config
 from executor.job import Job
+from executor.build import Build
 from executor.node import Node
 from executor.plugin import Plugin
 from executor.view import View
@@ -41,6 +42,11 @@ def main():
     if args.main_command == 'job':
         job_executor = Job(url, user, password, args, args.job_command)
         job_executor.run()
+
+    # 'build' command
+    if args.main_command == 'build':
+        build_executor = Build(url, user, password, args, args.build_command)
+        build_executor.run()
 
     # 'view' command
     if args.main_command == 'view':

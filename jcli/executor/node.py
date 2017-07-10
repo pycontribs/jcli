@@ -14,7 +14,7 @@
 #    under the License.
 import logging
 
-from jcli import errors
+from jcli import exception
 from server import Server
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
@@ -52,7 +52,7 @@ class Node(Server):
             try:
                 self.server.delete_node(self.node_args.name)
             except Exception:
-                raise errors.JcliException(
+                raise exception.JcliException(
                     "No such node: {}".format(self.node_args.name))
             logger.info("Removed node: %s", self.node_args.name)
         else:
@@ -64,7 +64,7 @@ class Node(Server):
         name = self.node_args.name
 
         if self.server.node_exists(name):
-            raise errors.JcliException(
+            raise exception.JcliException(
                 "There is already node with this name: %s", name)
 
         try:
@@ -76,14 +76,14 @@ class Node(Server):
             logger.info("Node created: %s", name)
 
         except Exception:
-            raise errors.JcliException("Couldn't create node: %s",
-                                       Exception.message)
+            raise exception.JcliException("Couldn't create node: %s",
+                                          Exception.message)
 
     def node_info(self):
         """Print information on a specific plugin."""
 
         if not self.server.node_exists(self.node_args.name):
-            raise errors.JcliException(
+            raise exception.JcliException(
                 "There is node with such name: %s", self.node_args.name)
         try:
             node_json = self.server.get_node_info(
@@ -97,7 +97,7 @@ class Node(Server):
                 logger.info("Cause: %s", node_json['offlineCauseReason'])
 
         except Exception as e:
-            raise errors.JcliException(e)
+            raise exception.JcliException(e)
 
     def run(self):
         """Executes chosen action."""
